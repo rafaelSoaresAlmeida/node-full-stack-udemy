@@ -6,12 +6,18 @@ const passport = require("passport");
 
 const keys = require("./config/keys");
 
+const bodyParser = require("body-parser");
+
 require("./models/User");
 require("./services/passport");
+require("./models/Survey");
 
 mongoose.connect(keys.mongoURI);
 
 const app = express();
+
+app.use(bodyParser.json());
+
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -25,5 +31,7 @@ app.use(passport.session());
 const PORT = process.env.PORT || 5000;
 
 require("./routes/authRoutes")(app);
+require("./routes/billingRoutes")(app);
+require("./routes/surveyRoutes")(app);
 
 app.listen(PORT);
